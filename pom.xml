@@ -18,7 +18,6 @@
         <module>auth-service</module>
         <module>api-gateway</module>
         <module>order-service</module>
-        <module>user-service</module>
         <module>user-profile-service</module>
     </modules>
 

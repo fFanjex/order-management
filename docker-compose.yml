@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: order-management
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 0000
+    ports:
+      - "5433:5433"
+    networks:
+      - backend-network
+
+  user-service:
+    build: ./user-profile-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/order-management
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 0000
+      JWT_SECRET: MySuperSecretKeyForJwtGeneration123!
+    depends_on:
+      - postgres
+    networks:
+      - backend-network
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/order-management
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 0000
+      JWT_SECRET: MySuperSecretKeyForJwtGeneration123!
+    depends_on:
+      - postgres
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
