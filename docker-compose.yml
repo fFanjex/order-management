@@ -40,6 +40,18 @@ services:
     networks:
       - backend-network
 
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8085:8085"
+    depends_on:
+      - auth-service
+      - user-service
+    networks:
+      - backend-network
+    environment:
+      JWT_SECRET: MySuperSecretKeyForJwtGeneration123!
+
 networks:
   backend-network:
     driver: bridge
